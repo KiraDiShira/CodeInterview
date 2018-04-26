@@ -56,3 +56,30 @@ public class D : B
 }
 
 ```
+
+### Lambda expressions and captured variables
+
+```c#
+
+for (int i = 0; i < 10; i++)
+{
+    new Thread (() => Console.Write (i)).Start();
+}
+
+```
+
+The output is nondeterministic! Here’s a typical result:
+
+```
+0223557799
+```
+
+The problem is that the i variable refers to the same memory location throughout the loop’s lifetime. Therefore, each thread calls Console.Write on a variable whose value may change as it is running! The solution is to use a temporary variable as follows:
+
+```c#
+for (int i = 0; i < 10; i++)
+{
+    int temp = i;
+    new Thread (() => Console.Write (temp)).Start();
+}
+```
